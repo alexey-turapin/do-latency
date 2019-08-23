@@ -42,6 +42,7 @@ def start_test(ping_count=10, file_size="10mb", udp=False):
         pbar.set_description(PADDING_FORMAT.format("Download speed testing ({})".format(region)))
         url = "http://{}/{}.test".format(host, file_size)
         results[region].append(do_download(url, lambda progress, message=None: update_pbar(pbar, progress, message)))
+    pbar.close()
     # Output sorted by latency results as table
     table_data = [[key] + value for key, value in six.iteritems(results)]
     table_data.sort(key=lambda row: float(row[1]))
@@ -61,7 +62,7 @@ def main():
     parser = argparse.ArgumentParser(description="Digital Ocean regions latency checking tool.")
     parser.add_argument("--ping-count", help='Count of ICMP requests for latency check (default: %(default)s)', type=int, default=10)
     parser.add_argument("--file-size", help='File size for download speed test (default: %(default)s)', type=str, default="10mb", choices=("10mb", "100mb"))
-    parser.add_argument('--udp', dest='udp', action='store_true', help="Use UDP not ICMP") 
+    parser.add_argument('--udp', dest='udp', action='store_true', help="Use UDP not ICMP")
     args = parser.parse_args()
     start_test(**args.__dict__)
 

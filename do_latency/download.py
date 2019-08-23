@@ -28,6 +28,7 @@ def do_download(url, hook=None):
     except HTTPException as e:
         if hook is not None:
             hook(None, "'{}': {}".format(url, e))
+            hook(100)
         return returnFormat.format(0)
 
     if http_handler:
